@@ -4,8 +4,9 @@ import csv
 from pathlib import Path
 
 class Scoring:
-    def __init__(self):
+    def __init__(self, output_dir="./"):
         self.path_resource = Path("./resources/answers")
+        self.output_dir = Path(output_dir)
 
     def _read_answer_key(self, test_number):
         path_answer_key = self.path_resource/f"{test_number}.txt"
@@ -50,7 +51,8 @@ class Scoring:
         
         return final_answers
     
-    def score(self, test, file_answer):
+    def score(self, test, file_answer, output_dir=None):
+        path_output = Path(output_dir) if output_dir else self.output_dir
         answer_key = self._read_answer_key(test)
 
         with open(file_answer, 'r', encoding='utf-8') as f:
@@ -76,7 +78,7 @@ class Scoring:
             if not is_correct:
                 wrong_answers.append(q_num)
 
-        output_filename = f"{Path(file_answer).stem}-{test}.csv"
+        output_filename = path_output / f"{Path(file_answer).stem}-{test}.csv"
 
         with open(output_filename, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=['Question', 'Student Answer', 'Correct'])

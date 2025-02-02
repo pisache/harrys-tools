@@ -15,7 +15,7 @@ class HarrysToolsGUI:
         self.root = root
         self.root.title("Harrys Tools")
         self.root.geometry("400x400")
-        self.scorer=Scoring()
+        self.scorer=Scoring(output_dir="./out")
 
         self.test_numbers = self._get_test_numbers()
 
@@ -111,7 +111,7 @@ class HarrysToolsGUI:
             if path_file:
                 try:
                     selected_test = test_var.get()
-                    wrong_questions = self.scorer.score(selected_test, path_file)
+                    wrong_questions = self.scorer.score(selected_test, path_file, output_dir="./out")
                     messagebox.showinfo(
                         "해리스 툴즈",
                         "답안지 채점 완료!"
