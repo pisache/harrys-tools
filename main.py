@@ -6,6 +6,7 @@ from tkinter import font as tkfont
 from lib.scanPDF import ScanPDF
 from lib.excelAutomation import ExcelAutomation
 from lib.toPDF import ToPDF
+from lib.scoring import Scoring
 
 class HarrysToolsGUI:
     def __init__(self, root):
@@ -54,7 +55,15 @@ class HarrysToolsGUI:
             btn.pack(pady=10)
 
     def open_tool1(self):
-        pass
+        window_tool = tk.Toplevel(self.root)
+        window_tool.title("개별오답 엑셀 자동화")
+        window_tool.geometry("600x400")
+        
+        label = ttk.Label(
+            window_tool,
+            text="Tool 1 Content"
+        )
+        label.pack(pady=20)
 
     def open_tool2(self):
         pass

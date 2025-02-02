@@ -3,3 +3,4 @@ __pycache__/
 pdf/
 개별학습확인표/
 *.xlsx
+*/*.pdf

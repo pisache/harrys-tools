@@ -1,4 +1,3 @@
-import sys
 import openpyxl
 from openpyxl.styles import Font, Alignment
 from openpyxl.utils import range_boundaries
@@ -102,14 +101,7 @@ class ExcelAutomation:
                 cell.value = "X"
 
     @classmethod
-    def automate():
-        if len(sys.argv) < 4:
-            print("Usage: python excel_automation.py <source.xlsx> <source_sheet_name> <output.xlsx>")
-            sys.exit(1)
-
-        source_file = sys.argv[1]
-        source_sheet = sys.argv[2]
-        output_file = sys.argv[3]
+    def automate(source_file, source_sheet, output_file):
 
         # Load the workbooks
         source_wb = openpyxl.load_workbook(source_file)
