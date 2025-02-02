@@ -6,3 +6,5 @@ pdf/
 */*.pdf
 *.csv
 *.spec
+build/
+dist/

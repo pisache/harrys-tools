@@ -32,7 +32,7 @@ class Compile:
 
                 for row in csv_reader:
                     question = int(row['Question'])
-                    print(f"question number: {question}")
+                    #print(f"question number: {question}")
                     is_correct = row['Correct'].lower() == 'true'
 
                     if is_correct:
