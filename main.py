@@ -9,13 +9,15 @@ from lib.scanPDF import ScanPDF
 from lib.excelAutomation import ExcelAutomation
 from lib.toPDF import ToPDF
 from lib.scoring import Scoring
+from lib.compile import Compile
 
 class HarrysToolsGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Harrys Tools")
-        self.root.geometry("400x400")
+        self.root.geometry("400x300")
         self.scorer=Scoring(output_dir="./out")
+        self.compiler=Compile(results_dir="./out")
 
         self.test_numbers = self._get_test_numbers()
 
@@ -43,8 +45,8 @@ class HarrysToolsGUI:
 
         # Navigation Buttons
         buttons = [
-            ("모의고사 채점", self.open_tool1),
-            ("Tool 2", self.open_tool2)
+            ("모의고사 채점", self.open_tool1)
+            #("X", self.open_tool2)
         ]
 
         for text, command in buttons:
@@ -68,7 +70,7 @@ class HarrysToolsGUI:
     def open_tool1(self):
         window_tool = tk.Toplevel(self.root)
         window_tool.title("개별오답 엑셀 자동화")
-        window_tool.geometry("600x400")
+        window_tool.geometry("400x300")
         
         frame_main = ttk.Frame(window_tool, padding="20")
         frame_main.pack(fill=tk.BOTH, expand=True)
@@ -112,9 +114,10 @@ class HarrysToolsGUI:
                 try:
                     selected_test = test_var.get()
                     wrong_questions = self.scorer.score(selected_test, path_file, output_dir="./out")
+                    compilation = self.compiler.compile_wrong_answers(selected_test)
                     messagebox.showinfo(
                         "해리스 툴즈",
-                        "답안지 채점 완료!"
+                        "답안지 채점 및 개별오답 정리 완료!"
                     )
                 except Exception as e:
                     messagebox.showerror("Error", str(e))
@@ -131,7 +134,8 @@ class HarrysToolsGUI:
             "사용 방법\n\n"
             "1. 시험지 선택 드랍다운 메뉴에서 시험지 선택\n"
             "2. 답안지 채점 버튼 클릭후 답안지 선택\n"
-            "3. 결과는 "
+            "3. 개별오답 정리 파일을 저장할 위치 선택\n"
+            "결과 파일은 csv 형태로 저장됨. 엑셀 사용하여 열람 가능"
         )
 
         label_instructions = ttk.Label(

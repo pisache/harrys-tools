@@ -55,7 +55,7 @@ class Scoring:
         path_output = Path(output_dir) if output_dir else self.output_dir
         answer_key = self._read_answer_key(test)
 
-        with open(file_answer, 'r', encoding='utf-8') as f:
+        with open(file_answer, 'r', encoding='utf-8-sig') as f:
             content = f.read()
 
         student_answer = self._parse_student_answers(content, test)
@@ -80,7 +80,7 @@ class Scoring:
 
         output_filename = path_output / f"{Path(file_answer).stem}-{test}.csv"
 
-        with open(output_filename, 'w', newline='') as f:
+        with open(output_filename, 'w', newline='', encoding='utf-8-sig') as f:
             writer = csv.DictWriter(f, fieldnames=['Question', 'Student Answer', 'Correct'])
             writer.writeheader()
             writer.writerows(results)
