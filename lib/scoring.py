@@ -80,7 +80,7 @@ class Scoring:
 
         output_filename = path_output / f"{Path(file_answer).stem}-{test}.csv"
 
-        with open(output_filename, 'w', newline='', encoding='utf-8-sig') as f:
+        with open(output_filename, 'w', newline='', encoding='utf-8') as f:
             writer = csv.DictWriter(f, fieldnames=['Question', 'Student Answer', 'Correct'])
             writer.writeheader()
             writer.writerows(results)

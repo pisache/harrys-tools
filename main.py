@@ -69,8 +69,8 @@ class HarrysToolsGUI:
 
     def open_tool1(self):
         window_tool = tk.Toplevel(self.root)
-        window_tool.title("개별오답 엑셀 자동화")
-        window_tool.geometry("400x300")
+        window_tool.title("개별오답 채점 자동화")
+        window_tool.geometry("400x350")
         
         frame_main = ttk.Frame(window_tool, padding="20")
         frame_main.pack(fill=tk.BOTH, expand=True)
@@ -105,20 +105,26 @@ class HarrysToolsGUI:
         test_dropdown.pack(side=tk.LEFT)
 
         def select_and_score():
-            path_file = filedialog.askopenfilename(
+            files = filedialog.askopenfilenames(
                 title="답안지 선택",
                 filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
             )
 
-            if path_file:
+            if files:
                 try:
                     selected_test = test_var.get()
-                    wrong_questions = self.scorer.score(selected_test, path_file, output_dir="./out")
-                    compilation = self.compiler.compile_wrong_answers(selected_test)
-                    messagebox.showinfo(
-                        "해리스 툴즈",
-                        "답안지 채점 및 개별오답 정리 완료!"
-                    )
+                    total_process = 0
+
+                    for path_file in files:
+                        wrong_questions = self.scorer.score(selected_test, path_file, output_dir="./out")
+                        total_process += 1
+                    
+                    if total_process > 0:
+                        compilation = self.compiler.compile_wrong_answers(selected_test)
+                        messagebox.showinfo(
+                            "해리스 툴즈",
+                            f"{total_process}개의 답안지 채점 및 개별오답 정리 완료!"
+                        )
                 except Exception as e:
                     messagebox.showerror("Error", str(e))
         
@@ -132,10 +138,11 @@ class HarrysToolsGUI:
         # Instruction
         instructions = (
             "사용 방법\n\n"
+            "프로그램 폴더/resources/answers/ 안에 답안지 저장되있는지 확인\n\n"
             "1. 시험지 선택 드랍다운 메뉴에서 시험지 선택\n"
-            "2. 답안지 채점 버튼 클릭후 답안지 선택\n"
-            "3. 개별오답 정리 파일을 저장할 위치 선택\n"
-            "결과 파일은 csv 형태로 저장됨. 엑셀 사용하여 열람 가능"
+            "2. 답안지 채점 버튼 클릭후 답안지 전체 선택\n"
+            "3. 개별오답 정리 파일을 저장할 위치 선택\n\n"
+            "결과는 개별오답과 통계 두개의 파일로 저장됨"
         )
 
         label_instructions = ttk.Label(
