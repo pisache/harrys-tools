@@ -19,8 +19,10 @@ class Scoring:
     def _parse_student_answers(self, file_content, target_test):
         lines = file_content.strip().split('\n')
         current_test = None
-        answers = []
+        current_answers = []
+        final_answers = []
 
+    
         for line in lines:
             line = line.strip()
             if not line:
@@ -28,23 +30,30 @@ class Scoring:
 
             # is the current a test number
             if not any(c.isspace() for c in line):
+                if current_test == target_test and current_answers:
+                    final_answers = current_answers
+                    break
+
                 current_test = line
-                answers = []
+                current_answers = []
                 continue
 
             # is the test number target test?
             if current_test == target_test:
-                answers.extend([int(x) for x in line.split()])
-
-        if not answers:
-            raise ValueError(f"Test {target_test} not found in asnwer file")
+                current_answers.extend([int(x) for x in line.split()])
         
-        return answers
+        if current_test == target_test and current_answers and not final_answers:
+            final_answers = current_answers
+
+        if not final_answers:
+            raise ValueError(f"Test {target_test} not found in answer file")
+        
+        return final_answers
     
     def score(self, test, file_answer):
         answer_key = self._read_answer_key(test)
 
-        with open(file_answer, 'r') as f:
+        with open(file_answer, 'r', encoding='utf-8') as f:
             content = f.read()
 
         student_answer = self._parse_student_answers(content, test)
